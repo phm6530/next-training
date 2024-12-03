@@ -1,4 +1,4 @@
-import { authConfig } from "@/auth.config";
+import { authConfig } from "@/app/auth";
 import NextAuth from "next-auth";
 
 //보안게이트에 걸리면 이게 실행

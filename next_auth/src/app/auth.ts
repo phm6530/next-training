@@ -19,7 +19,7 @@ declare module "next-auth" {
   }
 }
 
-export const config: NextAuthConfig = {
+export const authConfig: NextAuthConfig = {
   providers: [
     Credentials({
       // 로그인 입력 필드 정의
@@ -31,10 +31,13 @@ export const config: NextAuthConfig = {
       async authorize(credentials): Promise<User | null> {
         if (credentials.email && credentials.password) {
           const AdapterOptions = {
-            id: crypto.randomUUID(),
+            id: crypto.randomUUID(), // NextAuth는 고유의 사용자Id가 필요함
             emailVerified: null,
           };
 
+          /**
+           * DB 체킹하고 리턴하기
+           */
           return {
             email: "1",
             name: "John Doe",
@@ -90,4 +93,4 @@ export const config: NextAuthConfig = {
   secret: process.env.NEXTAUTH_SECRET,
 } satisfies NextAuthConfig;
 
-export const { handlers, signIn, signOut, auth } = NextAuth(config);
+export const { handlers, signIn, signOut, auth } = NextAuth(authConfig);
