@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:17
+    restart: always
+    volumes:
+      - ./postgres-data-auth:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: auth
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
