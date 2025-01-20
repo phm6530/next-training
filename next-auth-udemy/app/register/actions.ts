@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { passwordsMatchSchema } from "@/vaildation/passwordMatchcSchema";
 import { registerSchema } from "@/vaildation/registerSchema";
-import { hash } from "bcrypt";
+import { hash } from "bcryptjs";
 import { db } from "@/db/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";

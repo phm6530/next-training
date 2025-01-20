@@ -1,10 +1,9 @@
 import { z } from "zod";
+import { passwordSchema } from "./passwordSchema";
 
 export const passwordsMatchSchema = z
   .object({
-    password: z
-      .string()
-      .min(5, { message: "비밀번호는 5글자 이상 설정해주세요" }),
+    password: passwordSchema,
     passwordConfirm: z.string(),
   })
   .superRefine((data, ctx) => {
