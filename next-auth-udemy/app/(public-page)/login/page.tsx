@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginUser } from "./actions";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -33,8 +34,11 @@ export default function LoginPage() {
     },
   });
 
+  const router = useRouter();
+
   const onSubmitHandler = async (data: z.infer<typeof loginSchema>) => {
     await loginUser({ email: data.email, password: data.password });
+    router.refresh();
   };
 
   return (
@@ -92,7 +96,7 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="flex-col">
           <div className="text-muted-foreground text-sm">
-            Don't have an coount?{" "}
+            Dont have an coount?{" "}
             <Link className="underline" href={"/register"}>
               Register
             </Link>

@@ -7,6 +7,21 @@ import { db } from "@/db/db";
 import { users } from "@/db/schema";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+
+      return token;
+    },
+    session({ session, token }) {
+      if (token) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+  },
   providers: [
     Credentials({
       name: "credentials",
@@ -43,6 +58,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30일
