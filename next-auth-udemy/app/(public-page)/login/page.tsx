@@ -37,7 +37,15 @@ export default function LoginPage() {
   const router = useRouter();
 
   const onSubmitHandler = async (data: z.infer<typeof loginSchema>) => {
-    await loginUser({ email: data.email, password: data.password });
+    const result = await loginUser({
+      email: data.email,
+      password: data.password,
+    });
+
+    if (result?.error) {
+      form.setError("root", { message: result.message });
+    }
+
     router.refresh();
   };
 
@@ -89,7 +97,9 @@ export default function LoginPage() {
                   );
                 }}
               />
-
+              {form.formState.errors.root?.message && (
+                <FormMessage>{form.formState.errors.root?.message}</FormMessage>
+              )}
               <Button type="submit">login</Button>
             </form>
           </Form>
@@ -103,7 +113,7 @@ export default function LoginPage() {
           </div>{" "}
           <div className="text-muted-foreground text-sm">
             Forget your password{" "}
-            <Link className="underline" href={"/register"}>
+            <Link className="underline" href={"/password-reset"}>
               Reset My password
             </Link>
           </div>

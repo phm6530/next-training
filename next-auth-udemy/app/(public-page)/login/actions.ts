@@ -20,8 +20,17 @@ export const loginUser = async ({
   }
 
   try {
-    await signIn("credentials", { email, password, redirect: false });
-  } catch (error) {}
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+  } catch (error) {
+    return {
+      error: true,
+      message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+    };
+  }
 };
 
 export const logout = async () => {

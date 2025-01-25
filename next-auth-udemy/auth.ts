@@ -38,6 +38,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         // 사용자가 없거나 비밀번호가 제공되지 않은 경우
         if (!user || !credentials.password) {
+          /** Next Auth내 authorize에서 던진 에러는 내부에서만 처리된다. */
           throw new Error("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 
