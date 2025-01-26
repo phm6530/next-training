@@ -24,7 +24,7 @@ export const passwordReset = async (userEmail: string) => {
   await db
     .insert(passwordResetTokens)
     .values({
-      id: user.id,
+      userId: user.id,
       token: randomToken,
       tokenExpriy,
     })

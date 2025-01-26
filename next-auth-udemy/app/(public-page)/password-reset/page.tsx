@@ -23,6 +23,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { passwordReset } from "./actions";
+import SentEmailPassword from "./SentEmail-password";
 
 const formSchema = z.object({
   email: z.string().email({ message: "email 형식이 아닙니다." }),
@@ -37,68 +38,66 @@ export default function PasswordResetPage() {
   });
 
   const onClickHandler = async (data: z.infer<typeof formSchema>) => {
-    const response = await passwordReset(data.email);
-    if (response?.error) {
-      form.setError("root", {
-        message: response.message,
-      });
-      return;
-    } else {
-      form.setError("root", { message: "" });
-    }
+    await passwordReset(data.email);
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle>Password Reset</CardTitle>
-          <CardDescription>Card Description</CardDescription>
-        </CardHeader>
+      {form.formState.isSubmitSuccessful ? (
+        <SentEmailPassword email={form.getValues("email")} />
+      ) : (
+        <Card className="w-[350px]">
+          <CardHeader>
+            <CardTitle>Password Reset</CardTitle>
+            <CardDescription>Card Description</CardDescription>
+          </CardHeader>
 
-        <CardContent>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onClickHandler)}
-              className="flex flex-col gap-[20px]"
-            >
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="your email" />
-                      </FormControl>{" "}
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-              {form.formState.errors.root && (
-                <FormMessage>{form.formState.errors.root.message}</FormMessage>
-              )}
-              <Button type="submit">submit</Button>
-            </form>
-          </Form>
-        </CardContent>
-        <CardFooter className="flex-col">
-          <div className="text-muted-foreground text-sm">
-            Remember your password{" "}
-            <Link className="underline" href={"/login"}>
-              Login
-            </Link>
-          </div>
-          <div className="text-muted-foreground text-sm">
-            Dont have an account?{" "}
-            <Link className="underline" href={"/register"}>
-              Register
-            </Link>
-          </div>{" "}
-        </CardFooter>
-      </Card>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onClickHandler)}
+                className="flex flex-col gap-[20px]"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="your email" />
+                        </FormControl>{" "}
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                {form.formState.errors.root && (
+                  <FormMessage>
+                    {form.formState.errors.root.message}
+                  </FormMessage>
+                )}
+                <Button type="submit">submit</Button>
+              </form>
+            </Form>
+          </CardContent>
+          <CardFooter className="flex-col">
+            <div className="text-muted-foreground text-sm">
+              Remember your password{" "}
+              <Link className="underline" href={"/login"}>
+                Login
+              </Link>
+            </div>
+            <div className="text-muted-foreground text-sm">
+              Dont have an account?{" "}
+              <Link className="underline" href={"/register"}>
+                Register
+              </Link>
+            </div>{" "}
+          </CardFooter>
+        </Card>
+      )}
     </div>
   );
 }
