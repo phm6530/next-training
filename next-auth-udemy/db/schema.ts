@@ -1,4 +1,5 @@
 import { pgTable, serial, text, timestamp, boolean } from "drizzle-orm/pg-core";
+export { passwordResetTokens } from "./passswordResetTokenSchema";
 
 // User TABLE
 export const users = pgTable("users", {

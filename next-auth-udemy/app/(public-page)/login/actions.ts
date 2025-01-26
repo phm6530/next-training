@@ -25,7 +25,7 @@ export const loginUser = async ({
       password,
       redirect: false,
     });
-  } catch (error) {
+  } catch (error: _) {
     return {
       error: true,
       message: "이메일 또는 비밀번호가 일치하지 않습니다.",

@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { passwordReset } from "./actions";
 
 const formSchema = z.object({
   email: z.string().email({ message: "email 형식이 아닙니다." }),
@@ -35,7 +36,17 @@ export default function PasswordResetPage() {
     resolver: zodResolver(formSchema),
   });
 
-  const onClickHandler = async (data: z.infer<typeof formSchema>) => {};
+  const onClickHandler = async (data: z.infer<typeof formSchema>) => {
+    const response = await passwordReset(data.email);
+    if (response?.error) {
+      form.setError("root", {
+        message: response.message,
+      });
+      return;
+    } else {
+      form.setError("root", { message: "" });
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -44,6 +55,7 @@ export default function PasswordResetPage() {
           <CardTitle>Password Reset</CardTitle>
           <CardDescription>Card Description</CardDescription>
         </CardHeader>
+
         <CardContent>
           <Form {...form}>
             <form
@@ -65,6 +77,9 @@ export default function PasswordResetPage() {
                   );
                 }}
               />
+              {form.formState.errors.root && (
+                <FormMessage>{form.formState.errors.root.message}</FormMessage>
+              )}
               <Button type="submit">submit</Button>
             </form>
           </Form>
