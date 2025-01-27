@@ -11,7 +11,7 @@ import * as dotenv from "dotenv";
  * drizzle이 데이터베이스 연결 정보를 올바르게 가져올 수 있습니다.
  */
 dotenv.config({ path: ".env.local" });
-console.log(process.env.DATABASE_URL);
+
 export default defineConfig({
   dialect: "postgresql",
   schema: "./db/schema.ts",
